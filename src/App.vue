@@ -1,31 +1,105 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <v-app>
+    <div v-if="!loggedIn">
+        <v-navigation-drawer v-model="drawer" fixed app>
+          <v-list dense>
+            <v-list-tile v-for="(menu,index) in menus" :key="index" :to="{name: menu.route}">
+              <v-list-tile-action>
+                <v-icon>{{ menu.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ menu.name }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+        </v-navigation-drawer>
+        <v-toolbar color="indigo" dark fixed app>
+          <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+          <v-toolbar-title>{{ title }}</v-toolbar-title>
+        </v-toolbar>
     </div>
-    <router-view/>
-  </div>
+    <div v-else-if="loggedIn && loggedAdmin">
+        <v-navigation-drawer v-model="drawer" fixed app>
+          <v-list dense>
+            <v-list-tile v-for="(menu,index) in menusAdmin" :key="index" :to="{name: menu.route}">
+              <v-list-tile-action>
+                <v-icon>{{ menu.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ menu.name }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+        </v-navigation-drawer>
+        <v-toolbar color="indigo" dark fixed app>
+          <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+          <v-toolbar-title>{{ titleEmployee }}</v-toolbar-title>
+        </v-toolbar>
+    </div>
+    <v-content>
+      <router-view/>
+    </v-content>
+    <div v-if="!loggedIn">
+      <v-footer height="auto" color="primary lighten-1">
+        <v-layout justify-center row wrap>
+          <v-btn color="white" flat round :to="{name: 'login'}">
+            Employee? Click here
+          </v-btn>
+          <v-flex primary lighten-2 py-3 text-xs-center white--text xs12>
+            &copy;2018 — <strong>Vuetify</strong>
+          </v-flex>
+        </v-layout>
+      </v-footer>
+    </div>
+    <div v-else>
+      <v-footer height="auto" color="primary lighten-1">
+        <v-layout justify-center row wrap>
+          <v-btn color="white" flat round :to="{name: 'logout'}">
+            Logout and Return to the Customer Page
+          </v-btn>
+          <v-flex primary lighten-2 py-3 text-xs-center white--text xs12>
+            &copy;2018 — <strong>Vuetify</strong>
+          </v-flex>
+        </v-layout>
+      </v-footer>
+    </div>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+import HelloWorld from './components/HelloWorld';
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  data() {
+    return {
+      drawer: false,
+      title: 'First Choice Travel Hub',
+      titleEmployee: 'First Choice Travel Hub Employee Dashboard',
+      menus: [
+        {name: 'Home', icon: 'home', route: 'home'},
+        {name: 'Packages', icon: 'mdi-shopping', route: 'customerPackage'},
+        {name: 'Tickets', icon: 'mdi-airport', route: 'customerTicket'},
+        {name: 'Hotels', icon: 'hotel', route: 'customerHotel'},
+        {name: 'Inquiries', icon: 'mdi-comment-alert', route: 'customerInquiries'},
+      ],
+      menusAdmin: [
+        {name: 'Home', icon: 'home', route: 'employeehome'},
+        {name: 'Packages', icon: 'mdi-shopping', route: 'employeePackage'},
+        {name: 'Tickets', icon: 'mdi-airport', route: 'employeeTicket'},
+        {name: 'Hotels', icon: 'hotel', route: 'employeeHotel'},
+        {name: 'Inquiries', icon: 'mdi-comment-alert', route: 'employeeInquiries'},
+        {name: 'Register Employee', icon: 'account-plus', route: 'register'},
+        {name: 'Logout', icon: 'mdi-account-remove', route: 'logout'},
+      ],
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.getters.loggedIn;
+    },
+    loggedAdmin() {
+      return this.$store.getters.loggedAdmin;
+    },
+  },
+};
+</script>

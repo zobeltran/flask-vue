@@ -17,6 +17,8 @@ flask-migrate = "*"
 bcrypt = "*"
 flask-bcrypt = "*"
 flask-cors = "*"
+gunicorn = "*"
+eventlet = "*"
 
 [dev-packages]
 "flake8" = "*"

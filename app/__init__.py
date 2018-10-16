@@ -1,5 +1,5 @@
-from flask import Flask
-from os import getenv
+from flask import Flask, current_app, send_file
+from os import getenv, path
 from app.models import db
 # from app.apiModels import ma
 from app.apiv1 import apiRoutes
@@ -11,8 +11,11 @@ app = Flask(__name__, static_folder='../dist/static')
 
 # Set Configurations
 secretKey = getenv('SECRET_KEY')
-dbUri = getenv('SQLALCHEMY_DATABASE_URI')
+dbUri = getenv('DATABASE_URI')
 sqlTrackModifcation = getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+app_dir = path.dirname(__file__)
+root_dir = path.dirname(app_dir)
+dist_dir = path.join(root_dir, 'dist')
 
 # Activate Configurations
 app.config['SECRET_KEY'] = secretKey
@@ -28,6 +31,14 @@ bcrypt.init_app(app)
 
 # Activate Blueprints
 app.register_blueprint(apiRoutes)
+
+
+@app.route('/')
+def index_client():
+    dist_dir = current_app
+    entry = path.join(dist_dir, 'index.html')
+    return send_file(entry)
+
 
 if __name__ == '__main__':
     app.jinja_env.cache = {}

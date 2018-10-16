@@ -34,7 +34,7 @@ export default new Router({
     {
       path: '/employee',
       name: 'employee',
-      component: () => import(/* webpackChunkName: "employee" */ './views/EmployeeHome.vue'),
+      component: () => import(/* webpackChunkName: "employee" */ './views/employee/EmployeeHome.vue'),
       meta: {
         requiresAuth: true,
       },
@@ -42,7 +42,7 @@ export default new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import(/* webpackChunkName: "employee" */ './views/Register.vue'),
+      component: () => import(/* webpackChunkName: "employee" */ './views/employee/Register.vue'),
       meta: {
         requiresAuth: true,
       },

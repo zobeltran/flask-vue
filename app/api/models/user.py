@@ -1,6 +1,7 @@
 from flask_restplus import Namespace, fields
 
 api = Namespace('Users', 'User related APIs', path='/users')
+
 a_user_details = api.model('users',
                            {'id': fields.Integer(),
                             'firstName': fields.String(),

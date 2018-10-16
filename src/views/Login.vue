@@ -1,5 +1,6 @@
 <template>
     <v-content>
+        <!-- <loading :active.sync="load" :height="128" :width="128" color="teal"></loading> -->
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
                 <v-flex x12 sm8 md4>
@@ -19,7 +20,7 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-flex xs4 offset-xs4>
-                                <v-btn block round color="primary" @click="login()">Login</v-btn>
+                                <v-btn block round color="primary" @click.native="loader = 'load'" :loading="load" :disabled="load" @click="login()">Login</v-btn>
                             </v-flex>
                         </v-card-actions>
                         <br>
@@ -37,9 +38,14 @@
 </template>
 
 <script>
+// import Loading from 'vue-loading-overlay';
+// import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
     data() {
         return{
+            loader: null,
+            load: false,
             snackbar: {
                 isError: false,
                 y: true,
@@ -60,9 +66,13 @@ export default {
             ],
         };
     },
+    // components: {
+    //     Loading,
+    // },
     methods: {
         login() {
             if (this.$refs.form.validate()) {
+                this.load = true;
                 this.$store.dispatch('retrieveToken', {
                     username: this.username,
                     password: this.password,
@@ -72,11 +82,13 @@ export default {
                 })
                 .catch((error) => {
                     if (error.status === 500) {
+                        this.load = false;
                         this.snackbar.isError = true;
                         this.snackbar.text = 'Sorry, we\'re slightly having a server error. Please hang on there.';
                     } else {
+                        this.load = false;
                         this.snackbar.isError = true;
-                        this.snackbar.text = error.data.errors.errorCodes +' ' + error.data.errors.message;
+                        this.snackbar.text = error.data.errors.errorCode + ' ' + error.data.errors.message;
                     }
                 });
             }

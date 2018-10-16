@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restplus import Api
-from app.api.user import api as user_api, authentication
+from app.api.restful.user import api as user_api, authentication
 from flask_cors import CORS
 
 

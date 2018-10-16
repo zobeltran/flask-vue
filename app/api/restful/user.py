@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.models import db, User
-from app.apiModels import api, a_auth, a_user, a_user_details
+from app.api.models.user import api, a_auth, a_user, a_user_details
 # from app.apiModels import UserSchema
 from app.helpers import token_required
 import jwt

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div v-if="!loggedIn">
-        <v-navigation-drawer v-model="drawer" fixed app>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
           <v-list dense>
             <v-list-tile v-for="(menu,index) in menus" :key="index" :to="{name: menu.route}">
               <v-list-tile-action>
@@ -19,7 +19,7 @@
         </v-toolbar>
     </div>
     <div v-else-if="loggedIn && loggedAdmin">
-        <v-navigation-drawer v-model="drawer" fixed app>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
           <v-list dense>
             <v-list-tile v-for="(menu,index) in menusAdmin" :key="index" :to="{name: menu.route}">
               <v-list-tile-action>
@@ -37,7 +37,9 @@
         </v-toolbar>
     </div>
     <v-content>
-      <router-view/>
+      <transition name="router-animation" leave-active-class="animate fadeOutLeftBig faster" enter-active-class="animated fadeInRightBig faster" mode="out-in">
+        <router-view/>
+      </transition>
     </v-content>
     <div v-if="!loggedIn">
       <v-footer height="auto" color="primary lighten-1">
@@ -66,9 +68,50 @@
   </v-app>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld';
+<style scoped>
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css";
 
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+</style>
+
+
+<script>
 export default {
   data() {
     return {
@@ -88,7 +131,7 @@ export default {
         {name: 'Tickets', icon: 'mdi-airport', route: 'employeeTicket'},
         {name: 'Hotels', icon: 'hotel', route: 'employeeHotel'},
         {name: 'Inquiries', icon: 'mdi-comment-alert', route: 'employeeInquiries'},
-        {name: 'Register Employee', icon: 'account-plus', route: 'register'},
+        {name: 'Register Employee', icon: 'mdi-account-plus', route: 'register'},
         {name: 'Logout', icon: 'mdi-account-remove', route: 'logout'},
       ],
     };

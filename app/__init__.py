@@ -3,7 +3,7 @@ from os import getenv
 from app.models import db
 # from app.apiModels import ma
 from app.apiv1 import apiRoutes
-from app.api.user import bcrypt
+from app.api.restful.user import bcrypt
 from flask_migrate import Migrate
 
 # Flask Activation
